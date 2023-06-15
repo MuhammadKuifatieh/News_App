@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 
+import '../error/exceptions.dart';
 import '../error/failures.dart';
 
 mixin HandlingExceptionManager {
@@ -13,6 +14,9 @@ mixin HandlingExceptionManager {
     try {
       final right = await tryCall();
       return Right(right);
+    } on UnauthenticatedExeption {
+      log("<< catch >> Unauthenticated Error ");
+      return const Left(UnauthenticatedFailure());
     } catch (e) {
       log("<< catch >> error is $e");
       if (tryCallLocal != null) {
